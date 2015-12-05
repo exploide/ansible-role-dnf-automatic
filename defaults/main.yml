@@ -1,0 +1,30 @@
+---
+
+# the preferences of dnf-automatic are documented at
+# https://dnf.readthedocs.org/en/latest/automatic.html
+
+# [commands]
+
+dnf_automatic_apply_updates: yes
+dnf_automatic_download_updates: yes
+dnf_automatic_upgrade_type: security
+dnf_automatic_random_sleep: 300
+
+# [emitters]
+
+dnf_automatic_emit_via: stdio
+# the following variable remains undefined such that the actual hostname is used
+# dnf-automatic_system_name = my-host
+dnf_automatic_output_width: 80
+
+# [email]
+
+dnf_automatic_email_from: root@localhost
+dnf_automatic_email_to: root
+dnf_automatic_email_host: localhost
+
+# [base]
+
+# this dict can be used to override arbitrary settings from dnf.conf
+dnf_automatic_base_overrides:
+    debuglevel: 1

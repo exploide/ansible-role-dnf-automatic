@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: Jannik Vieten
+  description: This role installs, configures and activates dnf-automatic via Ansible on hosts using the dnf package manager.
+  license: MIT
+  galaxy_tags:
+    - dnf
+    - automatic
+    - updates
+    - security
+    - packaging
+    - system
+
+dependencies: []
