@@ -23,7 +23,6 @@ dnf_automatic_download_updates: yes
 dnf_automatic_upgrade_type: security
 dnf_automatic_random_sleep: 300
 dnf_automatic_emit_via: stdio
-dnf_automatic_output_width: 80
 dnf_automatic_email_from: root@localhost
 dnf_automatic_email_to: root
 dnf_automatic_email_host: localhost

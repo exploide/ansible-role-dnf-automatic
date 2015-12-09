@@ -15,7 +15,6 @@ dnf_automatic_random_sleep: 300
 dnf_automatic_emit_via: stdio
 # the following variable remains undefined such that the actual hostname is used
 # dnf-automatic_system_name = my-host
-dnf_automatic_output_width: 80
 
 # [email]
 
