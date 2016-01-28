@@ -3,6 +3,11 @@ galaxy_info:
   author: Jannik Vieten
   description: This role installs, configures and activates dnf-automatic via Ansible on hosts using the dnf package manager.
   license: MIT
+  min_ansible_version: 1.2
+  platforms:
+      - name: Fedora
+        versions:
+        - all
   galaxy_tags:
     - dnf
     - automatic
