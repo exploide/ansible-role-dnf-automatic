@@ -7,7 +7,7 @@ galaxy_info:
   platforms:
       - name: Fedora
         versions:
-        - all
+        - 23
   galaxy_tags:
     - dnf
     - automatic
