@@ -1,9 +1,9 @@
 ansible-role: dnf-automatic
 =========
 
-This role installs, configures and activates `dnf-automatic` via Ansible on hosts using the dnf package manager. A possible use case is the automatic installation of security updates.
+This role installs, configures and activates `dnf-automatic` via Ansible on hosts which use the dnf package manager. A possible use case is the automatic installation of security updates.
 
-See https://dnf.readthedocs.org/en/latest/automatic.html for more information about `dnf-automatic`.
+See [https://dnf.readthedocs.org/en/latest/automatic.html](https://dnf.readthedocs.org/en/latest/automatic.html) for more information about `dnf-automatic`.
 
 Requirements
 ------------
@@ -13,7 +13,7 @@ In order for Ansible to work (on Fedora based hosts), it is necessary to have th
 Role Variables
 --------------
 
-The variable names are mostly self-explanatory. Beside the fact that the names are role-name prefixed, the names are identical to the preferences for the `dnf-automatic` configuration file. See https://dnf.readthedocs.org/en/latest/automatic.html#configuration-file-format for details.
+The variable names are mostly self-explanatory. Beside the fact that the names are role-name prefixed, the names are identical to the preferences for the `dnf-automatic` configuration file. See [https://dnf.readthedocs.org/en/latest/automatic.html#configuration-file-format](https://dnf.readthedocs.org/en/latest/automatic.html#configuration-file-format) for details.
 
 In particular, the following variables (including their default values) are used:
 
