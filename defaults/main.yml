@@ -13,12 +13,11 @@ dnf_automatic_random_sleep: 300
 # [emitters]
 
 dnf_automatic_emit_via: stdio
-# the following variable remains undefined such that the actual hostname is used
-# dnf-automatic_system_name = my-host
+dnf_automatic_system_name: "{{ ansible_nodename }}"
 
 # [email]
 
-dnf_automatic_email_from: root@localhost
+dnf_automatic_email_from: root
 dnf_automatic_email_to: root
 dnf_automatic_email_host: localhost
 

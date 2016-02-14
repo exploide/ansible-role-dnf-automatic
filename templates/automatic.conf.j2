@@ -14,8 +14,7 @@ random_sleep = {{ dnf_automatic_random_sleep }}
 [emitters]
 
 emit_via = {{ dnf_automatic_emit_via }}
-# the following setting remains commented out such that the actual hostname is used
-# system_name = my-host
+system_name = {{ dnf_automatic_system_name }}
 
 [email]
 
