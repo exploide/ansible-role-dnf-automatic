@@ -24,5 +24,4 @@ dnf_automatic_email_host: localhost
 # [base]
 
 # this dict can be used to override arbitrary settings from dnf.conf
-dnf_automatic_base_overrides:
-    debuglevel: 1
+dnf_automatic_base_overrides: {}

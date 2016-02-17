@@ -28,8 +28,7 @@ dnf_automatic_email_from: root
 dnf_automatic_email_to: root
 dnf_automatic_email_host: localhost
 
-dnf_automatic_base_overrides:
-    debuglevel: 1
+dnf_automatic_base_overrides: {}
 ```
 
 This default configuration sets `dnf-automatic` up to automatically download and install only security updates.
