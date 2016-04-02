@@ -6,11 +6,5 @@
 - name: deploy dnf-automatic configuration file
   template: src=automatic.conf.j2 dest=/etc/dnf/automatic.conf
 
-# the following is done via direct command execution
-# would prefer something like the service module but for systemd timers
-
-- name: ensure dnf-automatic timer is enabled
-  command: systemctl enable dnf-automatic.timer
-
-- name: ensure dnf-automatic timer is started
-  command: systemctl start dnf-automatic.timer
+- name: start and enable systemd timer for dnf-automatic
+  service: name=dnf-automatic.timer state=started enabled=yes
