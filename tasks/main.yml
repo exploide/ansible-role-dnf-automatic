@@ -1,7 +1,7 @@
 ---
 
 - name: install dnf-automatic package
-  dnf: name=dnf-automatic state=present
+  package: name=dnf-automatic state=present
 
 - name: deploy dnf-automatic configuration file
   template: src=automatic.conf.j2 dest=/etc/dnf/automatic.conf
