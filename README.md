@@ -24,6 +24,10 @@ dnf_automatic_upgrade_type: security
 dnf_automatic_random_sleep: 300
 dnf_automatic_emit_via: stdio
 dnf_automatic_system_name: "{{ ansible_nodename }}"
+dnf_automatic_command_format: cat
+dnf_automatic_stdin_format: "{body}"
+dnf_automatic_email_command_format: mail -s {subject} -r {email_from} {email_to}
+dnf_automatic_email_stdin_format: "{body}"
 dnf_automatic_email_from: root
 dnf_automatic_email_to: root
 dnf_automatic_email_host: localhost

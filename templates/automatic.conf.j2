@@ -15,6 +15,18 @@ random_sleep = {{ dnf_automatic_random_sleep }}
 emit_via = {{ dnf_automatic_emit_via }}
 system_name = {{ dnf_automatic_system_name }}
 
+[command]
+
+command_format = {{ dnf_automatic_command_format }}
+stdin_format = {{ dnf_automatic_stdin_format }}
+
+[command_email]
+
+command_format = {{ dnf_automatic_email_command_format }}
+stdin_format = {{ dnf_automatic_email_stdin_format }}
+email_from = {{ dnf_automatic_email_from }}
+email_to = {{ dnf_automatic_email_to }}
+
 [email]
 
 email_from = {{ dnf_automatic_email_from }}
