@@ -39,10 +39,29 @@ This default configuration sets `dnf-automatic` up to automatically download and
 
 Note that the `dnf_automatic_base_overrides` dictionary can be used to override arbitrary preferences from the base dnf configuration file for `dnf-automatic`.
 
+In addition, `dnf_automatic_reboot` can be set to true to perform automatic reboots when installed updates require it:
+
+```yaml
+dnf_automatic_reboot: false
+dnf_automatic_reboot_time: "03:00"
+dnf_automatic_reboot_script: "/usr/local/sbin/reboot-when-needed.sh"
+dnf_automatic_reboot_script_mode: "0700"
+dnf_automatic_reboot_script_content: |
+  #!/bin/bash
+  /bin/needs-restarting -r || /sbin/reboot
+dnf_automatic_reboot_dependencies: yum-utils
+```
+
 Dependencies
 ------------
 
-No dependencies needed.
+This role has a dependency on `vlcty.systemd-timers` to periodically run the reboot script. It can be installed by adding the following block to roles/requirements.yml:
+
+```
+- src: https://github.com/vlcty/ansible-systemd-timers.git
+  name: vlcty.systemd-timers
+  scm: git
+```
 
 Example Playbook
 ----------------
@@ -55,6 +74,16 @@ This example playbook deploys `dnf-automatic` on all hosts but is configured suc
   roles:
   - { role: exploide.dnf-automatic, dnf_automatic_upgrade_type: default }
 ```
+
+This example playbook deploys `dnf-automatic` to install security updates only, and deploys additional timer to reboot at 4:00 am when required:
+
+```yaml
+- hosts: all
+  remote_user: root
+  roles:
+  - { role: exploide.dnf-automatic, dnf_automatic_reboot: true, dnf_automatic_reboot_time: "04:00" }
+```
+
 
 License
 -------

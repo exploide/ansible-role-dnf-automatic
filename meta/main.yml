@@ -19,4 +19,10 @@ galaxy_info:
     - packaging
     - system
 
-dependencies: []
+dependencies:
+  - role: vlcty.systemd-timers
+    timers:
+      dnf-automatic-reboot:
+        timer_command: "{{ dnf_automatic_reboot_script }}"
+        timer_OnCalendar: "{{ dnf_automatic_reboot_time }}"
+    when: dnf_automatic_reboot

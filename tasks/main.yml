@@ -15,3 +15,16 @@
     name: dnf-automatic-install.timer
     state: started
     enabled: yes
+
+- name: Install dependencies needed for reboot
+  package:
+    name: "{{ dnf_automatic_reboot_dependencies }}"
+    state: present
+  when: dnf_automatic_reboot|bool
+
+- name: Copy reboot script
+  copy:
+    dest: "{{ dnf_automatic_reboot_script }}"
+    content: "{{ dnf_automatic_reboot_script_content }}"
+    mode: "{{ dnf_automatic_reboot_script_mode }}"
+  when: dnf_automatic_reboot|bool
