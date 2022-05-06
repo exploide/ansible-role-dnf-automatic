@@ -39,10 +39,8 @@ dnf_automatic_base_overrides: {}
 # Reboot
 
 dnf_automatic_reboot: false
-dnf_automatic_reboot_time: "03:00"
-dnf_automatic_reboot_script: "/usr/local/sbin/reboot-when-needed.sh"
-dnf_automatic_reboot_script_mode: "0700"
-dnf_automatic_reboot_script_content: |
-  #!/bin/bash
-  /bin/needs-restarting -r || /sbin/reboot
 dnf_automatic_reboot_dependencies: yum-utils
+dnf_automatic_reboot_OnCalendar: "03:00"
+dnf_automatic_reboot_AccuracySec: "15s"
+dnf_automatic_reboot_Description: "dnf-automatic-reboot"
+dnf_automatic_reboot_ExecStart: /bin/bash -c '/bin/needs-restarting -r || /sbin/reboot'

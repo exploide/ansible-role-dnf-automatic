@@ -43,25 +43,17 @@ In addition, `dnf_automatic_reboot` can be set to true to perform automatic rebo
 
 ```yaml
 dnf_automatic_reboot: false
-dnf_automatic_reboot_time: "03:00"
-dnf_automatic_reboot_script: "/usr/local/sbin/reboot-when-needed.sh"
-dnf_automatic_reboot_script_mode: "0700"
-dnf_automatic_reboot_script_content: |
-  #!/bin/bash
-  /bin/needs-restarting -r || /sbin/reboot
 dnf_automatic_reboot_dependencies: yum-utils
+dnf_automatic_reboot_OnCalendar: "03:00"
+dnf_automatic_reboot_AccuracySec: "15s"
+dnf_automatic_reboot_Description: "dnf-automatic-reboot"
+dnf_automatic_reboot_ExecStart: /bin/bash -c '/bin/needs-restarting -r || /sbin/reboot'
 ```
 
 Dependencies
 ------------
 
-This role has a dependency on `vlcty.systemd-timers` to periodically run the reboot script. It can be installed by adding the following block to roles/requirements.yml:
-
-```
-- src: https://github.com/vlcty/ansible-systemd-timers.git
-  name: vlcty.systemd-timers
-  scm: git
-```
+No dependencies needed.
 
 Example Playbook
 ----------------
