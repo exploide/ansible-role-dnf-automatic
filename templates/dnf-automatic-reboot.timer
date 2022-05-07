@@ -1,0 +1,11 @@
+# Managed by ansible - role dnf-automatic
+
+[Unit]
+Description={{ dnf_automatic_reboot_Description }} timer
+
+[Timer]
+OnCalendar={{ dnf_automatic_reboot_OnCalendar }}
+AccuracySec={{ dnf_automatic_reboot_AccuracySec }}
+
+[Install]
+WantedBy=timers.target

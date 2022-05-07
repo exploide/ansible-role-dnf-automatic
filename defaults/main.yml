@@ -35,3 +35,12 @@ dnf_automatic_email_host: localhost
 
 # this dict can be used to override arbitrary settings from dnf.conf
 dnf_automatic_base_overrides: {}
+
+# Reboot
+
+dnf_automatic_reboot: false
+dnf_automatic_reboot_dependencies: yum-utils
+dnf_automatic_reboot_OnCalendar: "03:00"
+dnf_automatic_reboot_AccuracySec: "15s"
+dnf_automatic_reboot_Description: "dnf-automatic-reboot"
+dnf_automatic_reboot_ExecStart: /bin/bash -c '/bin/needs-restarting -r || /sbin/reboot'

@@ -1,0 +1,8 @@
+# Managed by ansible - role dnf-automatic
+
+[Unit]
+Description={{ dnf_automatic_reboot_Description }} service
+
+[Service]
+Type=oneshot
+ExecStart={{ dnf_automatic_reboot_ExecStart }}
