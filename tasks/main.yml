@@ -16,26 +16,22 @@
     state: started
     enabled: yes
 
-- block:
-
-  - name: Install dependencies needed for reboot
-    package:
-      name: "{{ dnf_automatic_reboot_dependencies }}"
-      state: present
-    tags: pkg
-
-  - name: Deploy service and timer units
-    template:
-      src: "{{ item }}"
-      dest: "/etc/systemd/system/{{ item }}"
-      owner: root
-      group: root
-      mode: 0640
-    loop:
-      - dnf-automatic-reboot.service
-      - dnf-automatic-reboot.timer
-
+- name: Install dependencies needed for reboot
+  package:
+    name: "{{ dnf_automatic_reboot_dependencies }}"
+    state: present
   when: dnf_automatic_reboot|bool
+
+- name: Deploy service and timer units
+  template:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+    mode: 0640
+  loop:
+    - dnf-automatic-reboot.service
+    - dnf-automatic-reboot.timer
 
 - name: Set timer state for auto reboot
   systemd:
