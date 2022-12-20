@@ -33,6 +33,9 @@
     - dnf-automatic-reboot.service
     - dnf-automatic-reboot.timer
 
+- name: Populate service facts
+  service_facts:
+
 - name: Set timer state for auto reboot
   systemd:
     name: dnf-automatic-reboot.timer
@@ -40,3 +43,4 @@
     enabled: "{{ dnf_automatic_reboot }}"
     masked: false
     daemon_reload: true
+  when: ansible_facts.services['dnf-automatic-reboot.timer'] is defined
