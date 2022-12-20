@@ -1,17 +1,11 @@
-ansible-role: dnf-automatic
-=========
+# ansible-role: dnf-automatic
 
 This role installs, configures and activates `dnf-automatic` via Ansible on hosts which use the dnf package manager. A possible use case is the automatic installation of security updates.
 
 See [https://dnf.readthedocs.org/en/latest/automatic.html](https://dnf.readthedocs.org/en/latest/automatic.html) for more information about `dnf-automatic`.
 
-Requirements
-------------
 
-In order for Ansible to work (on Fedora based hosts), it is necessary to have the packages `python2`, `python2-dnf` and `libselinux-python` installed.
-
-Role Variables
---------------
+## Role Variables
 
 The variable names are mostly self-explanatory. Beside the fact that the names are role-name prefixed, the names are identical to the preferences for the `dnf-automatic` configuration file. See [https://dnf.readthedocs.org/en/latest/automatic.html#configuration-file-format](https://dnf.readthedocs.org/en/latest/automatic.html#configuration-file-format) for details.
 
@@ -50,18 +44,19 @@ dnf_automatic_reboot_Description: "dnf-automatic-reboot"
 dnf_automatic_reboot_ExecStart: /bin/bash -c '/bin/needs-restarting -r || /sbin/reboot'
 ```
 
-Dependencies
-------------
+
+## Dependencies
 
 No dependencies needed.
 
-Example Playbook
-----------------
+
+## Example Playbook
 
 This example playbook deploys `dnf-automatic` on all hosts but is configured such that all updates are installed automatically, not only security updates.
 
 ```yaml
-- hosts: all
+- name: Example playbook
+  hosts: all
   remote_user: root
   roles:
   - { role: exploide.dnf-automatic, dnf_automatic_upgrade_type: default }
@@ -70,14 +65,14 @@ This example playbook deploys `dnf-automatic` on all hosts but is configured suc
 This example playbook deploys `dnf-automatic` to install security updates only, and deploys additional timer to reboot at 4:00 am when required:
 
 ```yaml
-- hosts: all
+- name: Example playbook with auto reboot
+  hosts: all
   remote_user: root
   roles:
   - { role: exploide.dnf-automatic, dnf_automatic_reboot: true, dnf_automatic_reboot_time: "04:00" }
 ```
 
 
-License
--------
+## License
 
 MIT
