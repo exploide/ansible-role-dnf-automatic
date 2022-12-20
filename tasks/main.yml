@@ -10,12 +10,6 @@
     src: automatic.conf.j2
     dest: /etc/dnf/automatic.conf
 
-- name: Start and enable systemd timer for dnf-automatic
-  service:
-    name: dnf-automatic-install.timer
-    state: started
-    enabled: yes
-
 - name: Install dependencies needed for reboot
   package:
     name: "{{ dnf_automatic_reboot_dependencies }}"
@@ -35,6 +29,13 @@
 
 - name: Populate service facts
   service_facts:
+
+- name: Start and enable systemd timer for dnf-automatic
+  service:
+    name: dnf-automatic-install.timer
+    state: started
+    enabled: yes
+  when: ansible_facts.services['dnf-automatic-install.timer'] is defined
 
 - name: Set timer state for auto reboot
   systemd:
