@@ -12,15 +12,15 @@ The variable names are mostly self-explanatory. Beside the fact that the names a
 In particular, the following variables (including their default values) are used:
 
 ```yaml
-dnf_automatic_apply_updates: yes
-dnf_automatic_download_updates: yes
+dnf_automatic_apply_updates: true
+dnf_automatic_download_updates: true
 dnf_automatic_upgrade_type: security
 dnf_automatic_random_sleep: 300
 dnf_automatic_emit_via: stdio
 dnf_automatic_system_name: "{{ ansible_nodename }}"
 dnf_automatic_command_format: cat
 dnf_automatic_stdin_format: "{body}"
-dnf_automatic_email_command_format: mail -s {subject} -r {email_from} {email_to}
+dnf_automatic_email_command_format: "mail -s {subject} -r {email_from} {email_to}"
 dnf_automatic_email_stdin_format: "{body}"
 dnf_automatic_email_from: root
 dnf_automatic_email_to: root
@@ -41,7 +41,7 @@ dnf_automatic_reboot_dependencies: yum-utils
 dnf_automatic_reboot_OnCalendar: "03:00"
 dnf_automatic_reboot_AccuracySec: "15s"
 dnf_automatic_reboot_Description: "dnf-automatic-reboot"
-dnf_automatic_reboot_ExecStart: /bin/bash -c '/bin/needs-restarting -r || /sbin/reboot'
+dnf_automatic_reboot_ExecStart: "/bin/bash -c '/bin/needs-restarting -r || /sbin/reboot'"
 ```
 
 
