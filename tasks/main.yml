@@ -1,50 +1,49 @@
 ---
 
 - name: Install dnf-automatic package
-  package:
+  ansible.builtin.package:
     name: dnf-automatic
     state: present
 
 - name: Deploy dnf-automatic configuration file
-  template:
+  ansible.builtin.template:
     src: automatic.conf.j2
     dest: /etc/dnf/automatic.conf
+    mode: 0644
 
-- block:
+- name: Perform auto reboot specific tasks
+  when: dnf_automatic_reboot | bool
+  block:
+    - name: Install dependencies needed for reboot
+      ansible.builtin.package:
+        name: "{{ dnf_automatic_reboot_dependencies }}"
+        state: present
 
-  - name: Install dependencies needed for reboot
-    package:
-      name: "{{ dnf_automatic_reboot_dependencies }}"
-      state: present
-    tags: pkg
-
-  - name: Deploy service and timer units
-    template:
-      src: "{{ item }}"
-      dest: "/etc/systemd/system/{{ item }}"
-      owner: root
-      group: root
-      mode: 0640
-    loop:
-      - dnf-automatic-reboot.service
-      - dnf-automatic-reboot.timer
-
-  when: dnf_automatic_reboot|bool
+    - name: Deploy service and timer units
+      ansible.builtin.template:
+        src: "{{ item }}"
+        dest: "/etc/systemd/system/{{ item }}"
+        owner: root
+        group: root
+        mode: 0644
+      loop:
+        - dnf-automatic-reboot.service
+        - dnf-automatic-reboot.timer
 
 - name: Populate service facts
-  service_facts:
+  ansible.builtin.service_facts:
 
 - name: Start and enable systemd timer for dnf-automatic
-  service:
+  ansible.builtin.service:
     name: dnf-automatic-install.timer
     state: started
-    enabled: yes
+    enabled: true
   when: ansible_facts.services['dnf-automatic-install.timer'] is defined
 
 - name: Set timer state for auto reboot
-  systemd:
+  ansible.builtin.systemd:
     name: dnf-automatic-reboot.timer
-    state: "{{ dnf_automatic_reboot | ternary ('started', 'stopped') }}"
+    state: "{{ dnf_automatic_reboot | ternary('started', 'stopped') }}"
     enabled: "{{ dnf_automatic_reboot }}"
     masked: false
     daemon_reload: true
