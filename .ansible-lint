@@ -1,0 +1,5 @@
+---
+skip_list:
+  # the role name does not follow galaxy requirements
+  # https://galaxy.ansible.com/docs/contributing/creating_role.html#role-names
+  - role-name

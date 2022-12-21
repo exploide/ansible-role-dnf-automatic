@@ -1,0 +1,24 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  ansible-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          path: "${{ github.repository }}"
+
+      - name: Run ansible-lint
+        uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "${{ github.repository }}"
