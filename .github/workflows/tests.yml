@@ -75,5 +75,5 @@ jobs:
           export tag="${{ matrix.image.tag }}"
           export PY_COLORS=1
           export ANSIBLE_FORCE_COLOR=1
-          molecule --debug test -s "${{ matrix.scenario }}"
+          molecule test -s "${{ matrix.scenario }}"
         working-directory: "${{ github.repository }}"
