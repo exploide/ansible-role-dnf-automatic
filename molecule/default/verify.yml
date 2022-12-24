@@ -1,0 +1,69 @@
+---
+- name: Verify default scenario
+  hosts: all
+
+  tasks:
+  # test packages
+  - name: Gather package facts
+    ansible.builtin.package_facts:
+      manager: auto
+
+  - name: Check that dnf-automatic is installed
+    ansible.builtin.assert:
+      that:
+        - ansible_facts.packages['dnf-automatic'] is defined
+
+  - name: Check that yum-utils are not installed
+    ansible.builtin.assert:
+      that:
+        - ansible_facts.packages['yum-utils'] is not defined
+
+  # test dnf-automatic configuration
+  - name: Fetch /etc/dnf/automatic.conf from remote host and register it as automatic_conf
+    ansible.builtin.fetch:
+      src: /etc/dnf/automatic.conf
+      dest: /tmp/
+      flat: true
+
+  - name: Check content of /etc/dnf/automatic.conf
+    ansible.builtin.assert:
+      that:
+        - "'Ansible' in lookup('file', '/tmp/automatic.conf')"
+        - "'apply_updates = True' in lookup('file', '/tmp/automatic.conf')"
+        - "'download_updates = True' in lookup('file', '/tmp/automatic.conf')"
+        - "'upgrade_type = security' in lookup('file', '/tmp/automatic.conf')"
+
+  # test systemd units
+  - name: Check status of dnf-automatic-install.timer
+    ansible.builtin.systemd:
+      name: dnf-automatic-install.timer
+    register: dnf_automatic_install_timer
+
+  - name: Check that dnf-automatic-install.timer is started and enabled
+    ansible.builtin.assert:
+      that:
+        - dnf_automatic_install_timer.status['LoadState'] == 'loaded'
+        - dnf_automatic_install_timer.status['ActiveState'] == 'active'
+        - dnf_automatic_install_timer.status['UnitFileState'] == 'enabled'
+
+  - name: Check status of dnf-automatic-reboot.timer
+    ansible.builtin.systemd:
+      name: dnf-automatic-reboot.timer
+    register: dnf_automatic_reboot_timer
+
+  - name: Check that dnf-automatic-reboot.timer does not exist
+    ansible.builtin.assert:
+      that:
+        - dnf_automatic_reboot_timer.status['LoadState'] == 'not-found'
+        - dnf_automatic_reboot_timer.status['ActiveState'] == 'inactive'
+
+  - name: Check status of dnf-automatic-reboot.service
+    ansible.builtin.systemd:
+      name: dnf-automatic-reboot.service
+    register: dnf_automatic_reboot_service
+
+  - name: Check that dnf-automatic-reboot.service does not exist
+    ansible.builtin.assert:
+      that:
+        - dnf_automatic_reboot_service.status['LoadState'] == 'not-found'
+        - dnf_automatic_reboot_service.status['ActiveState'] == 'inactive'
