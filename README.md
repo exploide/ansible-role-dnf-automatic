@@ -14,17 +14,21 @@ In particular, the following variables (including their default values) are used
 ```yaml
 dnf_automatic_apply_updates: true
 dnf_automatic_download_updates: true
+dnf_automatic_network_online_timeout: 60
+dnf_automatic_random_sleep: 0
 dnf_automatic_upgrade_type: security
-dnf_automatic_random_sleep: 300
 dnf_automatic_emit_via: stdio
 dnf_automatic_system_name: "{{ ansible_nodename }}"
+dnf_automatic_send_error_messages: false
 dnf_automatic_command_format: cat
 dnf_automatic_stdin_format: "{body}"
-dnf_automatic_email_command_format: "mail -s {subject} -r {email_from} {email_to}"
+dnf_automatic_email_command_format: "mail -Ssendwait -s {subject} -r {email_from} {email_to}"
 dnf_automatic_email_stdin_format: "{body}"
 dnf_automatic_email_from: root
-dnf_automatic_email_to: root
 dnf_automatic_email_host: localhost
+dnf_automatic_email_port: 25
+dnf_automatic_email_tls: "no"
+dnf_automatic_email_to: root
 
 dnf_automatic_base_overrides: {}
 ```

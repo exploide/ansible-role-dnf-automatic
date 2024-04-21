@@ -7,13 +7,15 @@
 
 apply_updates = {{ dnf_automatic_apply_updates }}
 download_updates = {{ dnf_automatic_download_updates }}
-upgrade_type = {{ dnf_automatic_upgrade_type }}
+network_online_timeout = {{ dnf_automatic_network_online_timeout }}
 random_sleep = {{ dnf_automatic_random_sleep }}
+upgrade_type = {{ dnf_automatic_upgrade_type }}
 
 [emitters]
 
 emit_via = {{ dnf_automatic_emit_via }}
 system_name = {{ dnf_automatic_system_name }}
+send_error_messages = {{ dnf_automatic_send_error_messages }}
 
 [command]
 
@@ -30,8 +32,10 @@ email_to = {{ dnf_automatic_email_to }}
 [email]
 
 email_from = {{ dnf_automatic_email_from }}
-email_to = {{ dnf_automatic_email_to }}
 email_host = {{ dnf_automatic_email_host }}
+email_port = {{ dnf_automatic_email_port }}
+email_tls = {{ dnf_automatic_email_tls }}
+email_to = {{ dnf_automatic_email_to }}
 
 [base]
 
