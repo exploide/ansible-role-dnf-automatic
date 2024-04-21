@@ -9,7 +9,7 @@
   ansible.builtin.template:
     src: automatic.conf.j2
     dest: /etc/dnf/automatic.conf
-    mode: 0644
+    mode: "0644"
 
 - name: Perform auto reboot specific tasks
   when: dnf_automatic_reboot | bool
@@ -25,7 +25,7 @@
         dest: "/etc/systemd/system/{{ item }}"
         owner: root
         group: root
-        mode: 0644
+        mode: "0644"
       loop:
         - dnf-automatic-reboot.service
         - dnf-automatic-reboot.timer
