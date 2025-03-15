@@ -73,7 +73,7 @@ This example playbook deploys `dnf-automatic` to install security updates only, 
   hosts: all
   remote_user: root
   roles:
-  - { role: exploide.dnf-automatic, dnf_automatic_reboot: true, dnf_automatic_reboot_time: "04:00" }
+  - { role: exploide.dnf-automatic, dnf_automatic_reboot: true, dnf_automatic_reboot_OnCalendar: "04:00" }
 ```
 
 
