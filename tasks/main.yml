@@ -1,8 +1,22 @@
 ---
 
-- name: Install dnf-automatic package
+- name: Set DNF4 variables
+  ansible.builtin.set_fact:
+    dnf_automatic_package_name: dnf-automatic
+    dnf_automatic_systemd_timer: dnf-automatic-install.timer
+  when:
+    - ansible_pkg_mgr == "dnf4"
+
+- name: Set DNF5 variables
+  ansible.builtin.set_fact:
+    dnf_automatic_package_name: dnf5-plugin-automatic
+    dnf_automatic_systemd_timer: dnf5-automatic.timer
+  when:
+    - ansible_pkg_mgr == "dnf5"
+
+- name: "Install package {{ dnf_automatic_package_name }}"
   ansible.builtin.package:
-    name: dnf-automatic
+    name: "{{ dnf_automatic_package_name }}"
     state: present
 
 - name: Deploy dnf-automatic configuration file
@@ -13,7 +27,7 @@
 
 - name: Create dnf-automatic timer override directory
   ansible.builtin.file:
-    path: /etc/systemd/system/dnf-automatic-install.timer.d
+    path: "/etc/systemd/system/{{ dnf_automatic_systemd_timer }}.d"
     state: "directory"
     mode: "0755"
   when: dnf_automatic_timer_OnCalendar != "6:00"
@@ -21,14 +35,14 @@
 - name: Deploy dnf-automatic timer override file
   ansible.builtin.template:
     src: timer_oncalendar.conf.j2
-    dest: /etc/systemd/system/dnf-automatic-install.timer.d/timer_oncalendar.conf
+    dest: "/etc/systemd/system/{{ dnf_automatic_systemd_timer }}.d/timer_oncalendar.conf"
     mode: "0644"
   notify: Reload systemd
   when: dnf_automatic_timer_OnCalendar != "6:00"
 
 - name: Remove dnf-automatic timer override file
   ansible.builtin.file:
-    path: /etc/systemd/system/dnf-automatic-install.timer.d
+    path: "/etc/systemd/system/{{ dnf_automatic_systemd_timer }}.d"
     state: absent
   notify: Reload systemd
   when: dnf_automatic_timer_OnCalendar == "6:00"
@@ -53,14 +67,14 @@
         - dnf-automatic-reboot.timer
       notify: Reload systemd
 
-- name: Check status of dnf-automatic-install.timer
+- name: "Check status of {{ dnf_automatic_systemd_timer }}"
   ansible.builtin.systemd:
-    name: dnf-automatic-install.timer
+    name: "{{ dnf_automatic_systemd_timer }}"
   register: dnf_automatic_install_timer
 
 - name: Start and enable systemd timer for dnf-automatic
   ansible.builtin.service:
-    name: dnf-automatic-install.timer
+    name: "{{ dnf_automatic_systemd_timer }}"
     state: started
     enabled: true
   # run always if not in check mode or if the timer unit exists
