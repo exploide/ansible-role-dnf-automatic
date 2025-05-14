@@ -4,15 +4,13 @@
   ansible.builtin.set_fact:
     dnf_automatic_package_name: dnf-automatic
     dnf_automatic_systemd_timer: dnf-automatic-install.timer
-  when:
-    - ansible_pkg_mgr == "dnf4"
+  when: ansible_pkg_mgr == "dnf4" or ansible_pkg_mgr == "dnf"
 
 - name: Set DNF5 variables
   ansible.builtin.set_fact:
     dnf_automatic_package_name: dnf5-plugin-automatic
     dnf_automatic_systemd_timer: dnf5-automatic.timer
-  when:
-    - ansible_pkg_mgr == "dnf5"
+  when: ansible_pkg_mgr == "dnf5"
 
 - name: "Install package {{ dnf_automatic_package_name }}"
   ansible.builtin.package:
