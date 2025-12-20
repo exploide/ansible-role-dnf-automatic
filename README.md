@@ -18,7 +18,7 @@ dnf_automatic_network_online_timeout: 60
 dnf_automatic_random_sleep: 0
 dnf_automatic_upgrade_type: security
 dnf_automatic_emit_via: stdio
-dnf_automatic_system_name: "{{ ansible_nodename }}"
+dnf_automatic_system_name: "{{ ansible_facts['nodename'] }}"
 dnf_automatic_send_error_messages: false
 dnf_automatic_command_format: cat
 dnf_automatic_stdin_format: "{body}"
