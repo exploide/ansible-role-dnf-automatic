@@ -49,5 +49,6 @@ dnf_automatic_reboot_AccuracySec: "15s"
 dnf_automatic_reboot_Description: "dnf-automatic-reboot"
 dnf_automatic_reboot_ExecStart: "/bin/bash -c '/bin/needs-restarting -r || /sbin/reboot'"
 
-# Timer time
+# Timer settings
+dnf_automatic_systemd_timer: dnf5-automatic.timer
 dnf_automatic_timer_OnCalendar: "6:00"
