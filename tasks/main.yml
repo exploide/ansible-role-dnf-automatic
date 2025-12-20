@@ -3,11 +3,13 @@
 - name: Set DNF4 variables
   ansible.builtin.set_fact:
     dnf_automatic_package_name: dnf-automatic
+    dnf_automatic_systemd_timer: dnf-automatic-install.timer
   when: ansible_facts["pkg_mgr"] == "dnf4" or ansible_facts["pkg_mgr"] == "dnf"
 
 - name: Set DNF5 variables
   ansible.builtin.set_fact:
     dnf_automatic_package_name: dnf5-plugin-automatic
+    dnf_automatic_systemd_timer: dnf5-automatic.timer
   when: ansible_facts["pkg_mgr"] == "dnf5"
 
 - name: "Install package {{ dnf_automatic_package_name }}"
@@ -66,7 +68,7 @@
 - name: "Check status of {{ dnf_automatic_systemd_timer }}"
   ansible.builtin.systemd:
     name: "{{ dnf_automatic_systemd_timer }}"
-  register: dnf_automatic_timer_status
+  register: dnf_automatic_install_timer
 
 - name: Start and enable systemd timer for dnf-automatic
   ansible.builtin.service:
@@ -76,7 +78,7 @@
   # run always if not in check mode or if the timer unit exists
   # regardless of the check mode state
   when: not ansible_check_mode or
-        dnf_automatic_timer_status.status["LoadState"] == "loaded"
+        dnf_automatic_install_timer.status["LoadState"] == "loaded"
 
 - name: Check status of dnf-automatic-reboot.timer
   ansible.builtin.systemd:
