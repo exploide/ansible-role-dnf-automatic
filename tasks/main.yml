@@ -12,7 +12,7 @@
     dnf_automatic_systemd_timer: dnf5-automatic.timer
   when: ansible_facts["pkg_mgr"] == "dnf5"
 
-- name: "Install package {{ dnf_automatic_package_name }}"
+- name: "Install dnf-automatic package"
   ansible.builtin.package:
     name: "{{ dnf_automatic_package_name }}"
     state: present
@@ -65,7 +65,7 @@
         - dnf-automatic-reboot.timer
       notify: Reload systemd
 
-- name: "Check status of {{ dnf_automatic_systemd_timer }}"
+- name: "Check status of systemd timer"
   ansible.builtin.systemd:
     name: "{{ dnf_automatic_systemd_timer }}"
   register: dnf_automatic_timer_status
