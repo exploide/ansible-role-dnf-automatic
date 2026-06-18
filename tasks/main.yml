@@ -17,6 +17,13 @@
     name: "{{ dnf_automatic_package_name }}"
     state: present
 
+- name: Get package facts
+  ansible.builtin.package_facts:
+
+- name: Check if dnf-automatic version supports reboot.
+  ansible.builtin.set_fact:
+    dnf_automatic_supports_reboot: "{{ ansible_facts.packages[dnf_automatic_package_name][0].version is version('4.14.0', operator='>=', version_type='semver') }}"
+
 - name: Deploy dnf-automatic configuration file
   ansible.builtin.template:
     src: automatic.conf.j2
@@ -46,7 +53,7 @@
   when: dnf_automatic_timer_OnCalendar == "6:00"
 
 - name: Perform auto reboot specific tasks
-  when: dnf_automatic_reboot | bool
+  when: dnf_automatic_reboot != 'never' and not dnf_automatic_supports_reboot
   block:
     - name: Install dependencies needed for reboot
       ansible.builtin.package:
@@ -60,6 +67,18 @@
         owner: root
         group: root
         mode: "0644"
+      loop:
+        - dnf-automatic-reboot.service
+        - dnf-automatic-reboot.timer
+      notify: Reload systemd
+
+- name: Cleanup auto reboot specific tasks
+  when: dnf_automatic_supports_reboot
+  block:
+    - name: Remove service and timer units
+      ansible.builtin.file:
+        name: "/etc/systemd/system/{{ item }}"
+        state: absent
       loop:
         - dnf-automatic-reboot.service
         - dnf-automatic-reboot.timer
@@ -81,6 +100,7 @@
         dnf_automatic_timer_status.status["LoadState"] == "loaded"
 
 - name: Check status of dnf-automatic-reboot.timer
+  when: not dnf_automatic_supports_reboot
   ansible.builtin.systemd:
     name: dnf-automatic-reboot.timer
   register: dnf_automatic_reboot_timer
@@ -88,10 +108,11 @@
 - name: Set timer state for auto reboot
   ansible.builtin.systemd:
     name: dnf-automatic-reboot.timer
-    state: "{{ dnf_automatic_reboot | ternary('started', 'stopped') }}"
-    enabled: "{{ dnf_automatic_reboot }}"
+    state: '{{ "started" if (dnf_automatic_reboot != "never") else "stopped" }}'
+    enabled: '{{ dnf_automatic_reboot != "never" }}'
     masked: false
   # run always if not in check mode and the auto reboot is enabled
   # or if the timer unit exists regardless of the check mode state
-  when: (not ansible_check_mode and dnf_automatic_reboot) or
-        dnf_automatic_reboot_timer.status["LoadState"] == "loaded"
+  when: (not ansible_check_mode or
+        dnf_automatic_reboot_timer.status["LoadState"] == "loaded") and
+        not dnf_automatic_supports_reboot
