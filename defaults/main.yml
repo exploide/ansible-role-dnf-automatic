@@ -10,6 +10,9 @@ dnf_automatic_download_updates: true
 dnf_automatic_network_online_timeout: 60
 dnf_automatic_random_sleep: 0
 dnf_automatic_upgrade_type: security
+dnf_automatic_systemd_inhibit: true
+dnf_automatic_reboot: never
+dnf_automatic_reboot_command: "shutdown -r +5 'Rebooting after applying package updates'"
 
 # [emitters]
 
@@ -40,9 +43,8 @@ dnf_automatic_email_to: root
 # this dict can be used to override arbitrary settings from dnf.conf
 dnf_automatic_base_overrides: {}
 
-# Reboot
+# Reboot timer controls for older dnf-automatic
 
-dnf_automatic_reboot: false
 dnf_automatic_reboot_dependencies: yum-utils
 dnf_automatic_reboot_OnCalendar: "03:00"
 dnf_automatic_reboot_AccuracySec: "15s"
