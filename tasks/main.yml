@@ -53,7 +53,7 @@
   when: dnf_automatic_timer_OnCalendar == "6:00"
 
 - name: Perform auto reboot specific tasks
-  when: dnf_automatic_reboot != 'never' and not dnf_automatic_supports_reboot
+  when: not dnf_automatic_supports_reboot
   block:
     - name: Install dependencies needed for reboot
       ansible.builtin.package:
