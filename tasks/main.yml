@@ -77,20 +77,13 @@
             - dnf-automatic-reboot.timer
           notify: Reload systemd
 
-        - name: Check status of dnf-automatic-reboot.timer
-          ansible.builtin.systemd:
-            name: dnf-automatic-reboot.timer
-          register: dnf_automatic_reboot_timer
-
         - name: Set timer state for auto reboot
           ansible.builtin.systemd:
             name: dnf-automatic-reboot.timer
             state: '{{ "started" if (dnf_automatic_reboot != "never") else "stopped" }}'
             enabled: '{{ dnf_automatic_reboot != "never" }}'
             masked: false
-          # run always if not in check mode and the auto reboot is enabled
-          # or if the timer unit exists regardless of the check mode state
-          when: not ansible_check_mode or dnf_automatic_reboot_timer.status["LoadState"] == "loaded"
+          when: not ansible_check_mode
 
     - name: Cleanup auto reboot specific tasks
       when: dnf_automatic_supports_reboot
