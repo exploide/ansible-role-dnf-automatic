@@ -27,7 +27,7 @@
 
     - name: Check if dnf-automatic version supports reboot.
       ansible.builtin.set_fact:
-        dnf_automatic_supports_reboot: "{{ ansible_facts.packages[dnf_automatic_package_name][0].version is version('4.14.0', operator='>=', version_type='semver') }}"
+        dnf_automatic_supports_reboot: "{{ ansible_facts.packages[dnf_automatic_package_name][0].version is version('4.14.0', operator='>=', version_type='loose') }}"
 
     - name: Deploy dnf-automatic configuration file
       ansible.builtin.template:
